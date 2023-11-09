@@ -6,17 +6,17 @@ namespace BookStore.Web.Controllers
 {
 	public class BookTypeController : Controller
 	{
-		private readonly ApplicationDbContext _dbContext;
-		
+		private readonly IBookTypeRepository _bookTypeRepository;
 
-		public BookTypeController(ApplicationDbContext dbContext)
+
+		public BookTypeController(IBookTypeRepository bookTypeRepository)
 		{
-			_dbContext = dbContext;
+			_bookTypeRepository = bookTypeRepository;
 		}
 
 		public IActionResult Index()
 		{
-			List<BookType> objBookTypes = _dbContext.BookTypes.ToList();
+			List<BookType> objBookTypes = _bookTypeRepository.GetAll().ToList();
 			return View(objBookTypes);
 		}
 
@@ -29,8 +29,8 @@ namespace BookStore.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_dbContext.BookTypes.Add(bookType);
-				_dbContext.SaveChanges();
+				_bookTypeRepository.Add(bookType);
+				_bookTypeRepository.Save();
 				TempData["success"] = "Kitap türü başarıyla eklendi";
 
 			return RedirectToAction("Index", "BookType");
@@ -45,7 +45,7 @@ namespace BookStore.Web.Controllers
 				return NotFound();
 			}
 
-			BookType? bookTypeDb = _dbContext.BookTypes.Find(id);
+			BookType? bookTypeDb = _bookTypeRepository.Get(x => x.Id == id);
 			if (bookTypeDb == null)
 			{
 				return NotFound();
@@ -57,8 +57,8 @@ namespace BookStore.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_dbContext.BookTypes.Update(bookType);
-				_dbContext.SaveChanges();
+				_bookTypeRepository.Update(bookType);
+				_bookTypeRepository.Save();
 				TempData["success"] = "Kitap türü başarıyla güncellendi.";
 				return RedirectToAction("Index", "BookType");
 			}
@@ -73,7 +73,7 @@ namespace BookStore.Web.Controllers
 				return NotFound();
 			}
 
-			BookType? bookTypeDb = _dbContext.BookTypes.Find(id);
+			BookType? bookTypeDb = _bookTypeRepository.Get(x => x.Id==id);
 			if (bookTypeDb == null)
 			{
 				return NotFound();
@@ -83,14 +83,14 @@ namespace BookStore.Web.Controllers
 		[HttpPost, ActionName("Delete")]
 		public IActionResult DeletePOST(int? id)
 		{
-			BookType? bookType = _dbContext.BookTypes.Find(id);
+			BookType? bookType = _bookTypeRepository.Get(x => x.Id == id);
 			if (bookType == null)
 			{
 				return NotFound();
 			}
 
-			_dbContext.BookTypes.Remove(bookType);
-			_dbContext.SaveChanges();
+			_bookTypeRepository.Remove(bookType);
+			_bookTypeRepository.Save();
 			TempData["success"] = "Kitap türü başarıyla silindi.";
 			return RedirectToAction("Index", "BookType");
 

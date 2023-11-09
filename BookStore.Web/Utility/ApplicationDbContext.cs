@@ -8,6 +8,8 @@ namespace BookStore.Web.Utility
 	 public	ApplicationDbContext(DbContextOptions<ApplicationDbContext>  options) : base(options) { }
 
 	 public DbSet<BookType> BookTypes { get; set; }
+	 public DbSet<Book> Books { get; set; }
+
 
 	}
 }
