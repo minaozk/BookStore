@@ -20,7 +20,7 @@ namespace BookStore.Web.Controllers
 
 		public IActionResult Index()
 		{
-			List<Book> objBookList = _bookRepository.GetAll().ToList();
+			List<Book> objBookList = _bookRepository.GetAll(includeProps:"BookType").ToList();
 			
 			return View(objBookList);
 		}
@@ -58,22 +58,25 @@ namespace BookStore.Web.Controllers
 				string wwwRootPath = _webHostEnvironment.WebRootPath;
 				string bookPath = Path.Combine(wwwRootPath, @"img");
 
-				using (var fileStream = new FileStream(Path.Combine(bookPath, file.FileName), FileMode.Create))
+				if (file!= null)
 				{
-					file.CopyTo(fileStream);
+					using (var fileStream = new FileStream(Path.Combine(bookPath, file.FileName), FileMode.Create))
+					{ 
+						file.CopyTo(fileStream);
+					}
+					book.ImageUrl = @"\img\" + file.FileName;
 				}
-
-				book.ImageUrl = @"\img\" + file.FileName;
+				
 
 				if (book.Id == 0)
 				{
 					_bookRepository.Add(book);
-					TempData["success"] = "Kitap başarıyla eklendi";
+					TempData["success"] = "Kitap başarıyla eklendi!";
 				}
 				else
 				{
 					_bookRepository.Update(book);
-					TempData["success"] = "Kitap güncelleme başarılı";
+					TempData["success"] = "Kitap güncelleme başarılı!";
 				}
 				
 				_bookRepository.Save();
@@ -82,33 +85,7 @@ namespace BookStore.Web.Controllers
 
 			return View();
 		}
-		//public IActionResult Edit(int? id)
-		//{
-		//	if (id == null || id == 0)
-		//	{
-		//		return NotFound();
-		//	}
-
-		//	Book? bookDb = _bookRepository.Get(x => x.Id == id);
-		//	if (bookDb == null)
-		//	{
-		//		return NotFound();
-		//	}
-		//	return View(bookDb);
-		//	//}
-		//	[HttpPost]
-		//	public IActionResult Edit(Book book)
-		//	{
-		//		if (ModelState.IsValid)
-		//		{
-		//			_bookRepository.Update(book);
-		//			_bookRepository.Save();
-		//			TempData["success"] = "Kitap başarıyla güncellendi.";
-		//			return RedirectToAction("Index", "Book");
-		//		}
-
-		//		return View();
-		//	}
+		
 
 			public IActionResult Delete(int? id)
 		{

@@ -50,7 +50,7 @@
 				<td>@book.Description</td>
 				<td>@book.Author</td>
 				<td>@book.Price</td>
-				<td></td>
+				<td>@book.BookType.Name</td>
 				
 				<div class="w-75 btn-group" role="group">
 					<td>	<a asp-controller="Book" asp-action="Upsert" asp-route-id="@book.Id" class="btn btn-primary">
