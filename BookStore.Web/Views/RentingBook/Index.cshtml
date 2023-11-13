@@ -1,0 +1,74 @@
+﻿@model List<RentingBook>
+
+@if (TempData["success"] != null)
+{
+	<h2>@TempData["success"]</h2>
+}
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white py-2">Kitap Kiralamaları</h2>
+			</div>
+		</div>
+	</div>
+	
+
+	<table class="table table-bordered">
+		<thead>
+		<tr>
+			<th>
+				Id
+			</th>
+			<th>
+				Öğrenci Id
+			</th>
+			<th>Kitap Adı</th>
+			<th></th>
+			
+		</tr>
+		</thead>
+
+		<tbody>
+		@foreach (var rent in Model)
+		{
+			<tr>
+
+				<td>@rent.Id</td>
+				<td>@rent.StudentId</td>
+				<td>@rent.Book.BookName</td>
+			
+				
+				<div class="w-75 btn-group" role="group">
+					<td>	<a asp-controller="RentingBook" asp-action="Upsert" asp-route-id="@rent.Id" class="btn btn-primary">
+							<i class="bi bi-pencil-square"></i> Güncelle
+						</a>
+						<a asp-controller="RentingBook" asp-action="Delete"  asp-route-id="@rent.Id" class="btn btn-danger mx-2">
+							<i class="bi bi-trash-fill"></i> Sil
+						</a></td>
+				</div>
+			</tr>
+		}
+
+		</tbody>
+	</table>
+	<div class="row pt-3 pb-2">
+		<div>
+			<a asp-controller="RentingBook" asp-action="Upsert" class="btn btn-lg btn-primary" type="button">
+				Yeni Kiralama Kaydı Oluştur
+			</a>
+		</div>
+	</div>
+</div>
+@section Scripts{
+	<script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons  lists   table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |  align lineheight | numlist bullist indent outdent',
+        });
+    </script>
+	@{
+		<partial name="_ValidationScriptsPartial"/>
+	}
+}

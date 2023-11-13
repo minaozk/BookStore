@@ -1,9 +1,11 @@
 ﻿using BookStore.Web.Models;
 using BookStore.Web.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStore.Web.Controllers
 {
+	[Authorize(Roles = UserRoles.Role_Admin)]
 	public class BookTypeController : Controller
 	{
 		private readonly IBookTypeRepository _bookTypeRepository;
