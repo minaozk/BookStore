@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BookStore.Web.styles.css" asp-append-version="true" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+	
+
 
 </head>
 <body>
@@ -22,10 +24,11 @@
 			    <div class="collapse navbar-collapse" id="navbarColor01">
 				    <ul class="navbar-nav me-auto">
 					    <li class="nav-item">
-						    <a class="nav-link active" href="#">Anasayfa
+						    <a class="nav-link active" href="/Home/Index">Anasayfa
 							    <span class="visually-hidden">(current)</span>
 						    </a>
 					    </li>
+					 
 						@if (User.IsInRole(UserRoles.Role_Admin))
 						{
                            <li class="nav-item">
@@ -34,7 +37,7 @@
 						    </a>
 					    </li>
 					    <li class="nav-item">
-						    <a class="nav-link active" href="/Book/Index">Kitaplar
+						    <a class="nav-link active" href="/Book/Index">Kitap İşlemleri
 							    <span class="visually-hidden">(current)</span>
 						    </a>
 					    </li>
@@ -44,7 +47,20 @@
 						    </a>
 					    </li>
 						}
-
+				    @if (User.IsInRole(UserRoles.Role_Student))
+						{
+							<li class="nav-item">
+								<a class="nav-link active" href="/Book/Index">Kitap Listesi
+									<span class="visually-hidden">(current)</span>
+								</a>
+							</li>
+							
+						}
+						<li class="nav-item">
+							<a class="nav-link active" href="Home/Privacy">İletişim
+								<span class="visually-hidden">(current)</span>
+							</a>
+						</li>
 				    </ul>
 					<partial name="_LoginPartial"/>
 				   
@@ -60,7 +76,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - BookStore.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 Yazılım Teknolojileri Akademesi 2023 - Online Kütüphane - <a asp-area="" asp-controller="Home" asp-action="Privacy">İletişim Bilgileri</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -68,5 +84,6 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="https://cdn.tiny.cloud/1/ufp99pm1oy7bu2vajvxydlrj4ima6j7z0duordm017aqagfg/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
